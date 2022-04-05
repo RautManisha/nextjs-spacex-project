@@ -1,4 +1,6 @@
+import Head from "next/head";
 import { getAllLaunchData } from "../lib/launches";
+import Launch from "../components/launch";
 
 export async function getStaticProps() {
   const launches = await getAllLaunchData();
@@ -10,21 +12,11 @@ export async function getStaticProps() {
 }
 export default function Home({ launches }) {
   return (
-    <>
-      <div>
-        {launches.map((launch) => {
-          return (
-            <a key={launch.id} href={launch.links.video_link}>
-              <h3>{launch.mission_name}</h3>
-              <p>
-                <strong>Launch Date:</strong>{" "}
-                {new Date(launch.launch_date_local).toLocaleDateString("en-US")}
-              </p>
-              <br />
-            </a>
-          );
-        })}
-      </div>
-    </>
+    <div>
+      <Head>
+        <title>Spacex Project</title>
+      </Head>
+      <Launch launches={launches} />
+    </div>
   );
 }
