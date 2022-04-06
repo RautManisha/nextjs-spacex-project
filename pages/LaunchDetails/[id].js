@@ -1,7 +1,7 @@
-import { getLaunchData, getAllLaunchData, getAllIds } from "../../lib/launches";
+import { getLaunchData } from "../../lib/launches";
 import Head from "next/head";
 
-export async function getStaticProps({ params }) {
+export async function getServerSideProps({ params }) {
   const launchData = await getLaunchData(params.id);
   return {
     props: {
@@ -10,14 +10,15 @@ export async function getStaticProps({ params }) {
   };
 }
 
-export async function getStaticPaths() {
-  const paths = await getAllIds();
-  // console.log(paths);
-  return {
-    paths,
-    fallback: false,
-  };
-}
+// //Error with npm run build
+// export async function getStaticPaths() {
+//   const paths = await getAllIds();
+//   // console.log(paths);
+//   return {
+//     paths,
+//     fallback: true,
+//   };
+// }
 
 export default function LaunchDetails({ launchData }) {
   return (
