@@ -1,8 +1,8 @@
 import Head from "next/head";
 import { getAllLaunchData } from "../lib/launches";
 import Launch from "../components/launch";
-import { useState, useEffect } from "react";
-import useInfiniteScroll from "../components/useInfiniteScroll.js";
+import React, { useEffect, useState, useRef } from "react";
+import { sortData } from "../lib/utility-functions";
 
 export async function getStaticProps() {
   const launches = await getAllLaunchData();
@@ -16,41 +16,50 @@ export async function getStaticProps() {
 export default function Home({ launches }) {
   const [data, setData] = useState([]);
   const [sortKey, setSortKey] = useState("id");
-  const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
   const [done, setDone] = useState(false);
+  const loader = useRef(null);
+  const [page, setPage] = useState(1);
+
+  const handleObserver = (entities) => {
+    const target = entities[0];
+    if (target.isIntersecting) {
+      setPage((_page) => _page + 1);
+    }
+  };
+
   useEffect(() => {
     setData(launches);
+    const options = {
+      root: null,
+      rootMargin: "20px",
+      threshold: 1.0,
+    };
+    const observer = new IntersectionObserver(handleObserver, options);
+    if (loader.current) {
+      observer.observe(loader.current);
+    }
   }, []);
 
   useEffect(() => {
     setData((data) => {
-      const dataToSort = [...data];
-      dataToSort.sort((a, b) => {
-        if (a[sortKey] < b[sortKey]) {
-          return 1;
-        } else if (a[sortKey] > b[sortKey]) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-      return dataToSort;
+      return sortData(data);
     });
   }, [sortKey]);
 
-  function fetchMoreListItems() {
+  useEffect(() => {
     const fetchData = async () => {
       const moreLaunches = await getAllLaunchData(data.length);
       if (moreLaunches) {
         setData([...data, ...moreLaunches]);
+        setData((data) => {
+          return sortData(data, sortKey);
+        });
       } else {
-        // console.log("Done fetching!!!!!!!!!");
         setDone(true);
       }
-      setIsFetching(false);
     };
-    if (!done) fetchData();
-  }
+    fetchData();
+  }, [page]);
 
   return (
     <div>
@@ -64,7 +73,14 @@ export default function Home({ launches }) {
         <option value="mission_name">Mission Name</option>
       </select>
       <Launch launches={data} />
-      {isFetching && !done && <h2>Fetching..</h2>}
+      {console.log("done? ", done)}
+      {!done ? (
+        <div className="loading" ref={loader}>
+          <h2>Loading...</h2>
+        </div>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
