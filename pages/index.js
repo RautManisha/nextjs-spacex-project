@@ -2,6 +2,7 @@ import Head from "next/head";
 import { getAllLaunchData } from "../lib/launches";
 import Launch from "../components/launch";
 import { useState, useEffect } from "react";
+import useInfiniteScroll from "../components/useInfiniteScroll.js";
 
 export async function getStaticProps() {
   const launches = await getAllLaunchData();
@@ -15,27 +16,15 @@ export async function getStaticProps() {
 export default function Home({ launches }) {
   const [data, setData] = useState([]);
   const [sortKey, setSortKey] = useState("id");
-  const [isFetching, setIsFetching] = useState(false);
+  const [isFetching, setIsFetching] = useInfiniteScroll(fetchMoreListItems);
   const [done, setDone] = useState(false);
-  // const done = false;
   useEffect(() => {
-    // const fetchData = async () => {
-    //   const launches = await getAllLaunchData();
-    //   setData(launches);
-    // };
-    // fetchData();
     setData(launches);
-    window.addEventListener("scroll", handleScroll);
-    console.log("mounted!!!!!!");
-    setDone(false);
-
-    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
     setData((data) => {
       const dataToSort = [...data];
-      // console.log("datatosort: ", dataToSort);
       dataToSort.sort((a, b) => {
         if (a[sortKey] < b[sortKey]) {
           return 1;
@@ -47,37 +36,20 @@ export default function Home({ launches }) {
       });
       return dataToSort;
     });
-    // console.log(sortKey);
-    // console.log(data);
   }, [sortKey]);
 
-  useEffect(() => {
-    if (!isFetching) return;
-    const fetchMoreListItems = async () => {
-      console.log("fetch fetch fetch");
+  function fetchMoreListItems() {
+    const fetchData = async () => {
       const moreLaunches = await getAllLaunchData(data.length);
       if (moreLaunches) {
         setData([...data, ...moreLaunches]);
       } else {
-        console.log("Done fetching!!!!!!!!!");
+        // console.log("Done fetching!!!!!!!!!");
         setDone(true);
       }
       setIsFetching(false);
     };
-    console.log("done? ", done);
-    if (!done) fetchMoreListItems();
-  }, [isFetching]);
-
-  function handleScroll() {
-    if (
-      window.innerHeight + document.documentElement.scrollTop + 1 <=
-      document.documentElement.offsetHeight
-    )
-      return;
-    // console.log("Fetch more list items!");
-    if (!done) {
-      setIsFetching(true);
-    }
+    if (!done) fetchData();
   }
 
   return (
@@ -92,7 +64,6 @@ export default function Home({ launches }) {
         <option value="mission_name">Mission Name</option>
       </select>
       <Launch launches={data} />
-      {/* {console.log(`is fetching ${isFetching}, complete ${isFetchingComplete}`)} */}
       {isFetching && !done && <h2>Fetching..</h2>}
     </div>
   );
