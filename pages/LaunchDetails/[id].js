@@ -24,17 +24,17 @@ export async function getServerSideProps({ params }) {
 
 export default function LaunchDetails({ launchData }) {
   return (
-    <div>
+    <div className="container ">
       <Head>
         <title>{launchData.mission_name}</title>
       </Head>
-      <article>
-        <h1>{launchData.mission_name}</h1>
+      <article className="justify-center block">
+        <h1 className="justify-items-center">{launchData.mission_name}</h1>
         <h3>{launchData.launch_date_local}</h3>
-        {/* {console.log("image: ", launchData.links.flickr_images)} */}
         {launchData.links.flickr_images.map((image, i) => {
           return (
             <Image
+              layout="responsive"
               key={i}
               src={image}
               alt="Launch pic"
