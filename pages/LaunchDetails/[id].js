@@ -34,7 +34,7 @@ export default function LaunchDetails({ launchData }) {
         {launchData.links.flickr_images.map((image, i) => {
           return (
             <Image
-              layout="responsive"
+              // layout="responsive"
               key={i}
               src={image}
               alt="Launch pic"
