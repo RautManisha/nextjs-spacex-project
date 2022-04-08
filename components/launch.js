@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function Launch({ launches }) {
   return (
     <section>
-      <h2 className="text-3xl font-bold text-gray-900/55 py-6 text-gray-500">
+      <h2 className="text-3xl font-bold text-gray-900/55 py-6 text-gray-300">
         Launches
       </h2>
 
@@ -12,7 +12,7 @@ export default function Launch({ launches }) {
         {launches.map((launch) => {
           return (
             <Link href={`/LaunchDetails/${launch.id}`} key={launch.id}>
-              <div className="card cursor-pointer transition ease-in-out hover:bg-fuchsia-300 duration-300">
+              <div className="card cursor-pointer transition ease-in-out bg-yellow-300 hover:bg-yellow-200 duration-300">
                 <div className="grid grid-cols-2 gap-4 justify-items-center content-evenly">
                   <div>
                     <a>

@@ -66,7 +66,7 @@ export default function Home({ launches }) {
   }, [page]);
 
   return (
-    <div className="bg-fuchsia-50">
+    <div className="bg-cyan-900">
       <div className="container center ">
         <Head>
           <title>Spacex Project</title>
@@ -82,7 +82,7 @@ export default function Home({ launches }) {
         <Launch launches={data} />
         {!done ? (
           <div className="loading" ref={loader}>
-            <h2>Loading...</h2>
+            <h2 className="text-gray-300">Loading...</h2>
           </div>
         ) : (
           ""
