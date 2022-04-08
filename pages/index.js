@@ -42,7 +42,7 @@ export default function Home({ launches }) {
 
   useEffect(() => {
     setData((data) => {
-      return sortData(data);
+      return sortData(data, sortKey);
     });
   }, [sortKey]);
 
@@ -73,7 +73,6 @@ export default function Home({ launches }) {
         <option value="mission_name">Mission Name</option>
       </select>
       <Launch launches={data} />
-      {console.log("done? ", done)}
       {!done ? (
         <div className="loading" ref={loader}>
           <h2>Loading...</h2>
