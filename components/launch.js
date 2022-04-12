@@ -4,23 +4,19 @@ import Image from "next/image";
 export default function Launch({ launches }) {
   return (
     <section>
-      <h2 className="text-3xl font-bold text-gray-900/55 py-6 text-gray-300">
-        Launches
-      </h2>
-
       <ul className="grid grid-cols-2 gap-4 justify-items-center content-evenly">
-        {/* {launches.length === undefined? : } */}
         {launches.map((launch, i) => {
           return (
             <Link href={`/LaunchDetails/${launch.id}`} key={launch.id + i}>
               <div className="card cursor-pointer transition ease-in-out bg-yellow-300 hover:bg-yellow-200 duration-300">
-                <div className="grid grid-cols-2 gap-4 justify-items-center content-evenly">
+                <div className="grid grid-cols-2 gap-4 justify-items-center content-evenly ">
                   <div>
                     <a>
-                      <h3>{launch.mission_name}</h3>
+                      <h3 className="pt-1 text-md  text-center font-bold">
+                        {launch.mission_name}
+                      </h3>
                     </a>
-                    <p>
-                      <strong>Launch Date:</strong>{" "}
+                    <p className="pt-1 text-sm text-center">
                       {new Date(launch.launch_date_local).toLocaleDateString(
                         "en-US"
                       )}

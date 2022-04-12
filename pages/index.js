@@ -72,6 +72,9 @@ export default function Home({ launches }) {
         <Head>
           <title>Spacex Project</title>
         </Head>
+        <h2 className="text-3xl font-bold text-gray-900/55 text-gray-300">
+          Launches
+        </h2>
         <div className="grid grid-cols-2 gap-4">
           <Dropdown
             callback={setSortKey}
@@ -86,7 +89,9 @@ export default function Home({ launches }) {
             list={filterOptions}
           />
         </div>
+
         <Launch launches={data} />
+
         {!done ? (
           <div className="loading" ref={loader}>
             <h2 className="text-gray-300">Loading...</h2>

@@ -1,6 +1,6 @@
 export default function Dropdown({ callback, label, list, id }) {
   return (
-    <div>
+    <div className="py-10">
       <label htmlFor={id} className="block text-sm font-medium text-gray-300">
         {label}
       </label>
@@ -9,7 +9,7 @@ export default function Dropdown({ callback, label, list, id }) {
         defaultValue="default"
         placeholder="Select"
         onChange={(e) => callback(e.target.value)}
-        className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none bg-gray-50 focus:ring-fuchsia-100 focus:border-fuchsia-100 sm:text-sm cursor-pointer"
+        className="mt-1 block w-full py-2 px-3 border border-gray-300 rounded-md shadow-sm focus:outline-none bg-gray-50 focus:ring-fuchsia-100 focus:border-fuchsia-100 sm:text-sm cursor-pointer"
       >
         <option value="default" disabled hidden>
           Select {label}
