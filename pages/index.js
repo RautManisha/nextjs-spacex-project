@@ -66,7 +66,7 @@ export default function Home({ launches }) {
   }, [page]);
 
   return (
-    <div className="bg-cyan-900">
+    <div className="bg-cyan-900 scroll-smooth h-full">
       <div className="container center ">
         <Head>
           <title>Spacex Project</title>

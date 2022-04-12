@@ -24,38 +24,66 @@ export async function getServerSideProps({ params }) {
 
 export default function LaunchDetails({ launchData }) {
   return (
-    <div className="container ">
-      <Head>
-        <title>{launchData.mission_name}</title>
-      </Head>
-      <article className="justify-center block">
-        <h1 className="justify-items-center">{launchData.mission_name}</h1>
-        <h3>{launchData.launch_date_local}</h3>
-        {launchData.links.flickr_images.map((image, i) => {
-          return (
-            <Image
-              // layout="responsive"
-              key={i}
-              src={image}
-              alt="Launch pic"
-              width={200}
-              height={200}
-            ></Image>
-          );
-        })}
-        <p>{launchData.details}</p>
-        <a href={launchData.links.video_link} target="_blank">
-          YouTube link
-        </a>
-        <br />
-        <a href={launchData.links.article_link} target="_blank">
-          Article link
-        </a>
-      </article>
-      <div>
-        <Link href="/">
-          <a>← Back to home</a>
-        </Link>
+    <div className="scroll-smooth bg-cyan-900 min-h-screen">
+      <div className="container ">
+        <Head>
+          <title>{launchData.mission_name}</title>
+        </Head>
+        <article className="items-center block">
+          <h1 className="text-center text-3xl font-bold text-gray-900/55 py-6 text-gray-300">
+            {launchData.mission_name}
+          </h1>
+          {launchData.links.flickr_images.map((image, i) => {
+            return i === 0 ? (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                }}
+                // className={"pt-10"}
+              >
+                <Image
+                  key={i}
+                  src={image}
+                  alt="Launch pic"
+                  width={200}
+                  height={200}
+                ></Image>
+              </div>
+            ) : (
+              ""
+            );
+          })}
+          <h3 className="pt-5 text-lg  text-center text-gray-300">
+            Date of Launch: {launchData.launch_date_local}
+          </h3>
+          <p className="py-5 text-lg text-center text-yellow-300">
+            {launchData.details ? launchData.details : "No Details Available"}
+          </p>
+          <a
+            href={launchData.links.video_link}
+            className="no-underline hover:underline text-gray-300 text-center block"
+            target="_blank"
+          >
+            YouTube link
+          </a>
+          <br />
+          <a
+            href={launchData.links.article_link}
+            className="no-underline hover:underline text-gray-300 text-center block"
+            target="_blank"
+          >
+            Article link
+          </a>
+        </article>
+        <div>
+          <Link href="/">
+            <a className="text-gray-300 ">
+              ←{" "}
+              <span className="no-underline hover:underline">Back to home</span>
+            </a>
+          </Link>
+        </div>
       </div>
     </div>
   );
