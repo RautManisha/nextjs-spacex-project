@@ -2,7 +2,12 @@ import Head from "next/head";
 import { getAllLaunchData } from "../lib/launches";
 import Launch from "../components/launch";
 import React, { useEffect, useState, useRef } from "react";
-import { sortData, sortOptions } from "../lib/utility-functions";
+import {
+  sortData,
+  sortOptions,
+  filterOptions,
+  fetchData,
+} from "../lib/utility-functions";
 import Dropdown from "../components/dropdown";
 
 export async function getStaticProps() {
@@ -17,6 +22,7 @@ export async function getStaticProps() {
 export default function Home({ launches }) {
   const [data, setData] = useState([]);
   const [sortKey, setSortKey] = useState("default");
+  const [filterKey, setFilterKey] = useState("all");
   const [done, setDone] = useState(false);
   const loader = useRef(null);
   const [page, setPage] = useState(1);
@@ -41,32 +47,27 @@ export default function Home({ launches }) {
     }
   }, []);
 
-  useEffect(
-    (e) => {
-      setData((data) => {
-        return sortData(data, sortKey);
-      });
-    },
-    [sortKey]
-  );
+  useEffect(() => {
+    setData((data) => {
+      return sortData(data, sortKey);
+    });
+  }, [sortKey]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const moreLaunches = await getAllLaunchData(data.length);
-      if (moreLaunches) {
-        setData([...data, ...moreLaunches]);
-        // setData((data) => {
-        //   return sortData(data, sortKey);
-        // });
-      } else {
-        setDone(true);
-      }
-    };
-    fetchData();
+    fetchData(filterKey, []).then((fetchedData) => {
+      setData(fetchedData);
+    });
+  }, [filterKey]);
+
+  useEffect(() => {
+    fetchData(filterKey, data).then((fetchedData) => {
+      const datacombine = [...data, ...fetchedData];
+      setData(datacombine);
+    });
   }, [page]);
 
   return (
-    <div className="bg-cyan-900 scroll-smooth h-full">
+    <div className="bg-cyan-900 scroll-smooth min-h-screen">
       <div className="container center ">
         <Head>
           <title>Spacex Project</title>
@@ -77,6 +78,12 @@ export default function Home({ launches }) {
             label="Sort By"
             id="sortBy"
             list={sortOptions}
+          />
+          <Dropdown
+            callback={setFilterKey}
+            label="Filter By"
+            id="filterBy"
+            list={filterOptions}
           />
         </div>
         <Launch launches={data} />

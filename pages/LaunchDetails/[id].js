@@ -36,6 +36,7 @@ export default function LaunchDetails({ launchData }) {
           {launchData.links.flickr_images.map((image, i) => {
             return i === 0 ? (
               <div
+                key={i}
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -43,7 +44,7 @@ export default function LaunchDetails({ launchData }) {
                 // className={"pt-10"}
               >
                 <Image
-                  key={i}
+                  // key={i}
                   src={image}
                   alt="Launch pic"
                   width={200}

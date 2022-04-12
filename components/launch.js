@@ -9,9 +9,10 @@ export default function Launch({ launches }) {
       </h2>
 
       <ul className="grid grid-cols-2 gap-4 justify-items-center content-evenly">
-        {launches.map((launch) => {
+        {/* {launches.length === undefined? : } */}
+        {launches.map((launch, i) => {
           return (
-            <Link href={`/LaunchDetails/${launch.id}`} key={launch.id}>
+            <Link href={`/LaunchDetails/${launch.id}`} key={launch.id + i}>
               <div className="card cursor-pointer transition ease-in-out bg-yellow-300 hover:bg-yellow-200 duration-300">
                 <div className="grid grid-cols-2 gap-4 justify-items-center content-evenly">
                   <div>
